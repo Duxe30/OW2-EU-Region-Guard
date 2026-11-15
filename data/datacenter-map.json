@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "mapVersion": "2026-11-07",
+  "description": "Reviewed mapping from Overwatch 2 datacenter codes to their hosting provider and region. Addresses are NOT listed here for cloud datacenters: they are pulled from the official AWS / Google Cloud IP range feeds by 'ow2rg-cli catalog build'. Blizzard publishes no official datacenter list; every code-to-region mapping below cites the community source it came from.",
+  "datacenters": [
+    {
+      "id": "me-mes1-bahrain",
+      "datacenterCode": "MES1",
+      "name": "Bahrain (AWS me-south-1)",
+      "region": "ME",
+      "country": "BH",
+      "provider": "aws",
+      "providerRegions": ["me-south-1"],
+      "providerServices": ["EC2"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20Other%20-%20Bahrain%20-%20MES1.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Lists 15.184.0.0/16, 15.185.0.0/16, 157.175.0.0/16 and 16.24.0.0/16 as MES1. All four are AWS me-south-1 EC2 prefixes in the official feed." },
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Catalog updated 2026-08-26 lists the same four ranges for MES1 (Bahrain)." },
+        { "url": "https://us.forums.blizzard.com/en/overwatch/t/information-about-the-global-play-server-selection/618941", "kind": "other", "note": "Blizzard Global Play post: NetGraph shows datacenter codes; MES1 is historically Bahrain." }
+      ],
+      "notes": "Whole AWS Bahrain EC2 region, blocked for Overwatch.exe UDP only; every other program keeps full access."
+    },
+    {
+      "id": "me-gmec1-doha",
+      "datacenterCode": "GMEC1",
+      "name": "Qatar, Doha (Google Cloud me-central1)",
+      "region": "ME",
+      "country": "QA",
+      "provider": "google-cloud",
+      "providerRegions": ["me-central1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20Other%20-%20Qatar%20-%20GMEC1.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Its four IPv4 ranges are exactly Google Cloud me-central1's IPv4 prefixes (the official feed has since added more)." },
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "GMEC1 Qatar, same ranges (2026-08-26)." }
+      ]
+    },
+    {
+      "id": "me-gmec2-dammam",
+      "datacenterCode": "GMEC2",
+      "name": "Saudi Arabia, Dammam (Google Cloud me-central2)",
+      "region": "ME",
+      "country": "SA",
+      "provider": "google-cloud",
+      "providerRegions": ["me-central2"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Maps gmec2 ('saudi arabia') directly to Google Cloud scope me-central2 (active project, 2026)." },
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20Other%20-%20KSA%20-%20GMEC2.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "KSA list contains the me-central2 prefixes (mixed with me-central1 and me-west1 prefixes)." }
+      ]
+    },
+    {
+      "id": "me-gcp-telaviv",
+      "name": "Google Cloud Tel Aviv (me-west1), no known datacenter code",
+      "region": "ME",
+      "country": "IL",
+      "provider": "google-cloud",
+      "providerRegions": ["me-west1"],
+      "codeMapping": "inferred",
+      "mappingSources": [
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20Other%20-%20KSA%20-%20GMEC2.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Community GMEC2 lists include me-west1 prefixes (34.165.0.0/16, 34.0.64.0/19, ...). No separate Overwatch datacenter code is known for this region." }
+      ],
+      "notes": "Community-only: enforced only if you explicitly allow community data."
+    },
+    {
+      "id": "eu-ams1-amsterdam",
+      "datacenterCode": "AMS1",
+      "name": "Netherlands, Amsterdam (Blizzard network)",
+      "region": "EU",
+      "country": "NL",
+      "provider": "blizzard",
+      "staticCidrs": ["5.42.168.0/21", "5.42.184.0/21", "64.224.26.0/23"],
+      "staticCidrsCheckedAtUtc": "2026-11-07T08:30:00Z",
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "ams1 = 64.224.26.0/23 (Blizzard)." },
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20EU%20-%20Netherlands%20-%20AMS1.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "5.42.168.0-5.42.175.255 and 64.224.26.0/23." },
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/Ip_ranges_EU.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Adds 5.42.184.0-5.42.191.255 to the EU list." }
+      ],
+      "notes": "Protected: never blocked. Protecting more addresses is always the safe direction."
+    },
+    {
+      "id": "eu-gen1-finland",
+      "datacenterCode": "GEN1",
+      "name": "Finland, Hamina (Google Cloud europe-north1)",
+      "region": "EU",
+      "country": "FI",
+      "provider": "google-cloud",
+      "providerRegions": ["europe-north1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Maps gen1 ('finland 2') to Google Cloud scope europe-north1." },
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20EU%20-%20Finland%202%20-%20GEN1.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "All listed ranges are europe-north1 prefixes." },
+        { "url": "https://us.forums.blizzard.com/en/overwatch/t/fix-the-servers/1012817", "kind": "other", "note": "2026 forum thread referencing AMS1 and GEN1 as the European options." }
+      ],
+      "notes": "Protected: never blocked."
+    },
+    {
+      "id": "eu-safety-net-gcp",
+      "name": "Safety net: every Google Cloud region in Europe",
+      "region": "EU",
+      "provider": "google-cloud",
+      "providerRegions": ["europe-*"],
+      "codeMapping": "not-applicable",
+      "protectOnly": true,
+      "notes": "Not a datacenter. Every address Google itself places in Europe is subtracted from every block plan, so a dirty or stale list can never block a European server."
+    },
+    {
+      "id": "eu-safety-net-aws",
+      "name": "Safety net: every AWS region in Europe (EC2)",
+      "region": "EU",
+      "provider": "aws",
+      "providerRegions": ["eu-*"],
+      "providerServices": ["EC2"],
+      "codeMapping": "not-applicable",
+      "protectOnly": true,
+      "notes": "Not a datacenter. Same purpose as the Google Cloud safety net, for AWS."
+    },
+    {
+      "id": "na-gue4-virginia",
+      "datacenterCode": "GUE4",
+      "name": "USA East, Virginia (Google Cloud us-east4)",
+      "region": "NA",
+      "country": "US",
+      "provider": "google-cloud",
+      "providerRegions": ["us-east4"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Maps gue4 ('usa - east 2') to Google Cloud scope us-east4." }
+      ]
+    },
+    {
+      "id": "na-ord1-iowa",
+      "datacenterCode": "ORD1",
+      "name": "USA Central (Google Cloud us-central1)",
+      "region": "NA",
+      "country": "US",
+      "provider": "google-cloud",
+      "providerRegions": ["us-central1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "About 98% of the ORD1 cloud ranges listed there lie inside us-central1." }
+      ]
+    },
+    {
+      "id": "na-ord1-blizzard-net",
+      "name": "ORD1 Blizzard-owned network (Chicago)",
+      "region": "NA",
+      "country": "US",
+      "provider": "blizzard",
+      "staticCidrs": ["24.105.40.0/21", "64.224.0.0/21"],
+      "staticCidrsCheckedAtUtc": "2026-11-07T08:30:00Z",
+      "codeMapping": "explicit",
+      "excludeFromBlocking": true,
+      "exclusionReason": "Blizzard-owned network that may also carry login, voice or other backend services, so it is never auto-blocked.",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "ord1 = 64.224.0.0/21, 24.105.40.0/21." }
+      ]
+    },
+    {
+      "id": "na-west-gcp",
+      "datacenterCode": "GUW2",
+      "name": "USA West (Google Cloud us-west1..4)",
+      "region": "NA",
+      "country": "US",
+      "provider": "google-cloud",
+      "providerRegions": ["us-west1", "us-west2", "us-west3", "us-west4"],
+      "codeMapping": "inferred",
+      "mappingSources": [
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "GUW2 ranges spread over us-west1/2/3/4; the exact region is ambiguous, so this entry stays community-only." }
+      ]
+    },
+    {
+      "id": "na-west-blizzard-net",
+      "name": "LAX1 / LAS1 Blizzard-owned networks",
+      "region": "NA",
+      "country": "US",
+      "provider": "blizzard",
+      "staticCidrs": ["24.105.8.0/21", "64.224.24.0/23"],
+      "staticCidrsCheckedAtUtc": "2026-11-07T08:30:00Z",
+      "codeMapping": "explicit",
+      "excludeFromBlocking": true,
+      "exclusionReason": "Blizzard-owned network that may also carry backend services, so it is never auto-blocked.",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "las1 = 64.224.24.0/23." },
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "LAX1 includes 24.105.8.0-24.105.15.255 and 64.224.24.0/23." }
+      ]
+    },
+    {
+      "id": "as-gsg1-singapore",
+      "datacenterCode": "GSG1",
+      "name": "Singapore (Google Cloud asia-southeast1)",
+      "region": "AS",
+      "country": "SG",
+      "provider": "google-cloud",
+      "providerRegions": ["asia-southeast1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Maps gsg1 to Google Cloud scope asia-southeast1. (Older community GSG1 lists also contain slivers of European Google Cloud space; the feed-based mapping avoids that.)" }
+      ]
+    },
+    {
+      "id": "as-gtk1-tokyo",
+      "datacenterCode": "GTK1",
+      "name": "Japan, Tokyo (Google Cloud asia-northeast1)",
+      "region": "AS",
+      "country": "JP",
+      "provider": "google-cloud",
+      "providerRegions": ["asia-northeast1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Maps gtk1 to Google Cloud scope asia-northeast1." }
+      ]
+    },
+    {
+      "id": "as-gan3-seoul",
+      "datacenterCode": "GAN3",
+      "name": "South Korea, Seoul (Google Cloud asia-northeast3)",
+      "region": "AS",
+      "country": "KR",
+      "provider": "google-cloud",
+      "providerRegions": ["asia-northeast3"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/foryVERX/Overwatch-Server-Selector/blob/main/ip_lists/cfg%20-%20Asia%20-%20South%20Korea%203%20-%20GAN3.txt", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "GAN3 cloud ranges lie inside asia-northeast3." }
+      ]
+    },
+    {
+      "id": "as-tpe1-taiwan",
+      "datacenterCode": "TPE1",
+      "name": "Taiwan (Google Cloud asia-east1)",
+      "region": "AS",
+      "country": "TW",
+      "provider": "google-cloud",
+      "providerRegions": ["asia-east1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "TPE1 lists 35.221.128.0/17, an asia-east1 prefix." }
+      ]
+    },
+    {
+      "id": "as-tpe1-blizzard-net",
+      "name": "TPE1 Blizzard-owned network",
+      "region": "AS",
+      "country": "TW",
+      "provider": "blizzard",
+      "staticCidrs": ["5.42.160.0/21"],
+      "staticCidrsCheckedAtUtc": "2026-11-07T08:30:00Z",
+      "codeMapping": "explicit",
+      "excludeFromBlocking": true,
+      "exclusionReason": "Blizzard-owned network that may also carry backend services, so it is never auto-blocked.",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "tpe1 = 5.42.160.0/22, 5.42.164.0/22." }
+      ]
+    },
+    {
+      "id": "oc-syd2-australia",
+      "datacenterCode": "SYD2",
+      "name": "Australia (Google Cloud australia-southeast1/2)",
+      "region": "OC",
+      "country": "AU",
+      "provider": "google-cloud",
+      "providerRegions": ["australia-southeast1", "australia-southeast2"],
+      "codeMapping": "inferred",
+      "mappingSources": [
+        { "url": "https://github.com/egohero/ow2-server-picker/blob/main/data/servers.json", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "SYD2 cloud ranges split between Sydney and Melbourne regions; ambiguous, so community-only." }
+      ]
+    },
+    {
+      "id": "oc-syd2-blizzard-net",
+      "name": "SYD2 Blizzard-owned network",
+      "region": "OC",
+      "country": "AU",
+      "provider": "blizzard",
+      "staticCidrs": ["158.115.196.0/23"],
+      "staticCidrsCheckedAtUtc": "2026-11-07T08:30:00Z",
+      "codeMapping": "explicit",
+      "excludeFromBlocking": true,
+      "exclusionReason": "Blizzard-owned network that may also carry backend services, so it is never auto-blocked.",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "syd2 = 158.115.196.0/23." }
+      ]
+    },
+    {
+      "id": "sa-gbr1-saopaulo",
+      "datacenterCode": "GBR1",
+      "name": "Brazil, Sao Paulo (Google Cloud southamerica-east1)",
+      "region": "SA",
+      "country": "BR",
+      "provider": "google-cloud",
+      "providerRegions": ["southamerica-east1"],
+      "codeMapping": "explicit",
+      "mappingSources": [
+        { "url": "https://github.com/stowmyy/dropship/blob/main/scripts/ips/overwatch.js", "kind": "community-list", "retrievedAtUtc": "2026-11-07T08:30:00Z", "note": "Maps gbr1 to Google Cloud scope southamerica-east1." }
+      ]
+    }
+  ]
+}

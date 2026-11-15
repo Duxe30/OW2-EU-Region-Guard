@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Windows adapters: Windows Defender Firewall COM, process/registry discovery, elevation, local storage. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>OW2RG.Infrastructure.Windows</RootNamespace>
+    <AssemblyName>OW2RG.Infrastructure.Windows</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OW2RG.Core\OW2RG.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The reviewed catalog and map ship inside the binary so the app works offline and from a single EXE. -->
+    <EmbeddedResource Include="..\..\data\servers.json" LogicalName="OW2RG.data.servers.json" Condition="Exists('..\..\data\servers.json')" />
+    <EmbeddedResource Include="..\..\data\datacenter-map.json" LogicalName="OW2RG.data.datacenter-map.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="OW2RG.Windows.Tests" />
+  </ItemGroup>
+</Project>
+

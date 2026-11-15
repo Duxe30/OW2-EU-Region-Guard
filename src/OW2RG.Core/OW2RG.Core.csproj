@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Pure domain logic. No Windows, COM, registry or UI dependencies, by design. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>OW2RG.Core</RootNamespace>
+    <AssemblyName>OW2RG.Core</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="OW2RG.Core.Tests" />
+  </ItemGroup>
+</Project>
