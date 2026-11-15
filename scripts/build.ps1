@@ -24,12 +24,21 @@ $ErrorActionPreference = 'Stop'
 $root = Resolve-Path (Join-Path $PSScriptRoot '..')
 Set-Location $root
 
-$dotnet = (Get-Command dotnet -ErrorAction SilentlyContinue).Source
-if (-not $dotnet -and (Test-Path "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe")) {
-    $dotnet = "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe"
-    $env:DOTNET_ROOT = Split-Path $dotnet
+# Pick a dotnet that actually has a 10.x SDK: a machine-wide .NET 8 SDK on PATH must not shadow a user-local .NET 10.
+function Test-HasSdk10([string]$exe) {
+    if (-not $exe -or -not (Test-Path $exe)) { return $false }
+    try { $sdks = & $exe --list-sdks 2>$null } catch { return $false }
+    return [bool]($sdks | Where-Object { $_ -match '^1[0-9]\.' })
 }
-if (-not $dotnet) { throw '.NET SDK 10 not found. Install it from https://dotnet.microsoft.com/download/dotnet/10.0' }
+$candidates = @(
+    (Get-Command dotnet -ErrorAction SilentlyContinue).Source,
+    "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe",
+    "$env:ProgramFiles\dotnet\dotnet.exe"
+) | Where-Object { $_ } | Select-Object -Unique
+$dotnet = $candidates | Where-Object { Test-HasSdk10 $_ } | Select-Object -First 1
+if (-not $dotnet) { throw ".NET SDK 10 not found (checked: $($candidates -join ', ')). Install it from https://dotnet.microsoft.com/download/dotnet/10.0" }
+$env:DOTNET_ROOT = Split-Path $dotnet
+$env:PATH = "$(Split-Path $dotnet);$env:PATH"
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $env:DOTNET_NOLOGO = '1'
 Write-Host "Using $dotnet ($(& $dotnet --version))"
