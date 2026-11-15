@@ -262,8 +262,14 @@ public sealed record FirewallEnvironment
     /// <summary>NET_FW_MODIFY_STATE: 0 = OK, 1 = group policy overrides local rules, 2 = inbound blocked.</summary>
     public int LocalPolicyModifyState { get; init; }
     public bool IsElevated { get; init; }
+    /// <summary>
+    /// Third-party firewall products registered as active in Windows Security Center (e.g. Kaspersky, Norton).
+    /// While one is active, Windows Defender Firewall stores rules but does not enforce them — verified live on
+    /// 2026-11-15: a block rule read back perfectly yet traffic kept flowing until the product's firewall was turned off.
+    /// </summary>
+    public IReadOnlyList<string> ThirdPartyFirewalls { get; init; } = [];
 
-    public bool RulesWouldTakeEffect => ApiAvailable && CurrentProfilesEnabled && LocalPolicyModifyState != 1;
+    public bool RulesWouldTakeEffect => ApiAvailable && CurrentProfilesEnabled && LocalPolicyModifyState != 1 && ThirdPartyFirewalls.Count == 0;
 
     public IReadOnlyList<string> Problems
     {
@@ -277,6 +283,12 @@ public sealed record FirewallEnvironment
                     p.Add("Windows Defender Firewall is OFF for the active network profile (or managed by another firewall product). Rules would have no effect. This app will not change that setting.");
                 if (LocalPolicyModifyState == 1)
                     p.Add("Group Policy overrides local firewall rules on this PC, so rules written by this app would be ignored.");
+                if (ThirdPartyFirewalls.Count > 0)
+                {
+                    string names = string.Join(", ", ThirdPartyFirewalls);
+                    p.Add($"Windows Defender Firewall is NOT the active firewall on this PC: {names} is registered as the firewall product, so Windows Firewall rules are stored but not enforced. " +
+                          $"Either turn off the Firewall component inside {names} (Windows Firewall then takes over) or create the equivalent application rules in {names}. This app never changes {names} settings.");
+                }
             }
             return p;
         }

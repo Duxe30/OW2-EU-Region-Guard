@@ -35,6 +35,9 @@ public static class SelfTest
         if (!env.ApiAvailable) return new SelfTestReport(false, null, steps);
         steps.Add(new("Active profile protected", env.CurrentProfilesEnabled,
             $"active: {FirewallEnvironment.ProfileNames(env.CurrentProfileTypes)}; enabled: {string.Join(", ", env.EnabledByProfile.Where(k => k.Value).Select(k => k.Key))}"));
+        steps.Add(new("Windows Firewall is the enforcing firewall", env.ThirdPartyFirewalls.Count == 0,
+            env.ThirdPartyFirewalls.Count == 0 ? "no third-party firewall product is registered as active"
+                : $"{string.Join(", ", env.ThirdPartyFirewalls)} is the active firewall; Windows Firewall rules are stored but NOT enforced on this PC"));
         steps.Add(new("Local rules honoured", env.LocalPolicyModifyState != 1, env.LocalPolicyModifyState switch
         {
             0 => "local rules take effect",
@@ -56,7 +59,7 @@ public static class SelfTest
         var spec = FirewallRuleSpec.CreateSelfTest(OwnedRules.SelfTestPrefix + "DRY", exe, [CidrBlock.Parse("192.0.2.0/24"), CidrBlock.Parse("2001:db8::/32")]);
         var dry = store.DryValidate(spec);
         steps.Add(new("Rule object accepted by Windows (not saved)", dry.Accepted, dry.Accepted ? $"read-back: {dry.WindowsReadBack}" : dry.Error ?? "rejected"));
-        return new SelfTestReport(steps.All(s => s.Passed || s.Name == "Active profile protected" || s.Name == "Local rules honoured"), null, steps);
+        return new SelfTestReport(steps.All(s => s.Passed || s.Name is "Active profile protected" or "Local rules honoured" or "Windows Firewall is the enforcing firewall"), null, steps);
     }
 
     public static SelfTestReport RunLive(ComFirewallStore store)
@@ -68,7 +71,10 @@ public static class SelfTest
             return new SelfTestReport(false, null, steps);
         }
         var env = store.ReadEnvironment();
-        steps.Add(new("Firewall active for current profile", env.RulesWouldTakeEffect, env.RulesWouldTakeEffect ? "yes" : string.Join(" ", env.Problems)));
+        steps.Add(new("Firewall active for current profile", env.CurrentProfilesEnabled && env.LocalPolicyModifyState != 1, env.CurrentProfilesEnabled ? "yes" : string.Join(" ", env.Problems)));
+        steps.Add(new("Windows Firewall is the enforcing firewall", env.ThirdPartyFirewalls.Count == 0,
+            env.ThirdPartyFirewalls.Count == 0 ? "no third-party firewall product is registered as active"
+                : $"{string.Join(", ", env.ThirdPartyFirewalls)} is the active firewall — expect the enforcement step below to FAIL until its Firewall component is turned off"));
 
         string exe = Environment.ProcessPath ?? throw new InvalidOperationException("Cannot determine own executable path.");
         string tag = Guid.NewGuid().ToString("N")[..10].ToUpperInvariant();

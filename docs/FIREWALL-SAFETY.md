@@ -36,6 +36,13 @@ now refuses `|` and control characters, and the live self-test writes the same d
   `OwnedOnlyFirewallStore` and inside `ComFirewallStore`).
 - No shell, no netsh, no PowerShell in the firewall path. No downloads of code. No UAC bypass.
 
+## Third-party firewalls
+
+When a security suite registers its own firewall in Windows Security Center, Windows Defender Firewall keeps
+accepting and storing rules but no longer enforces them. The app queries `root\SecurityCenter2` → `FirewallProduct`
+(state bit 0x1000 = on) on every environment read and refuses to apply while such a product is active; Restore
+is always allowed. The app never changes the third-party product.
+
 ## Overlap safety invariants (checked on every plan; a violation throws)
 
 ```text

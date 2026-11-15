@@ -260,6 +260,20 @@ public class FirewallApplyTests
     }
 
     [Fact]
+    public void Third_party_firewall_makes_apply_refuse_with_an_explanation()
+    {
+        var (fw, svc, _, _) = Setup();
+        fw.Environment = fw.Environment with { ThirdPartyFirewalls = ["Kaspersky"] };
+        Assert.False(fw.Environment.RulesWouldTakeEffect);
+        var r = svc.Apply(Plan(ProfileId.BlockMiddleEast));
+        Assert.Equal(ApplyStatus.Refused, r.Status);
+        Assert.Contains("Kaspersky", r.Summary);
+        Assert.Contains("not enforced", r.Summary);
+        Assert.Empty(fw.ReadOwnedRules());
+        Assert.True(svc.Restore().IsSuccess); // restore is always allowed
+    }
+
+    [Fact]
     public void Apply_is_refused_without_a_durable_snapshot()
     {
         var (fw, svc, snaps, _) = Setup();

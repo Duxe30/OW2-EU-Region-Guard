@@ -54,6 +54,13 @@ networks are never auto-blocked (they may carry login/voice services).
    Record it in the **Verify in game** tab. Play several matches before drawing conclusions.
 7. Anything wrong (can't connect, voice issues)? Press **RESTORE DEFAULT** at the bottom of the window.
 
+### Requirement: Windows Defender Firewall must be the active firewall
+
+If a third-party security suite (Kaspersky, Norton, McAfee, …) is registered as the firewall, Windows stores Defender
+Firewall rules but **does not enforce them** (verified live, 2026-11-15). Since 1.0.1 the app detects this, shows it on
+the dashboard and refuses to apply. Turn off the *Firewall* component inside that product (Windows Firewall takes
+over automatically) or recreate the rules there. The app never changes third-party software.
+
 ### Emergency removal without the app
 
 Run PowerShell **as Administrator**:

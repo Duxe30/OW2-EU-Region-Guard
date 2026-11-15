@@ -39,6 +39,7 @@ public sealed class ComFirewallStore : IFirewallRuleStore
                 CurrentProfilesEnabled = currentOn,
                 LocalPolicyModifyState = modifyState,
                 IsElevated = Elevation.IsElevated(),
+                ThirdPartyFirewalls = SecurityCenter.ActiveThirdPartyFirewalls(),
             };
         }
         catch (Exception ex)

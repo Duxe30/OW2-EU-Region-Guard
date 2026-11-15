@@ -100,11 +100,24 @@ control characters outright, the live self-test now writes the **same descriptio
 unit test asserts no generated rule text contains `|`. Lesson recorded: the dry validation proves address/program
 syntax only; Add-time validation needs the live self-test.
 
+### 1.0.1 (2026-11-15): third-party firewall detection
+
+On the build PC the live self-test, which had passed on 2026-11-07, **failed**: rules were stored and read back
+exactly, yet the blocked DNS question was still answered. Windows Security Center showed **Kaspersky** registered as
+the active firewall product (`productState` 266240, bit 0x1000 set). After the user turned off Kaspersky's Firewall
+component (`productState` 262144), the self-test passed again (blocked after 3 s). Windows Defender Firewall keeps
+its rules but stops enforcing them while a third-party firewall is active.
+
+Shipped: `SecurityCenter.ActiveThirdPartyFirewalls()` → `FirewallEnvironment.ThirdPartyFirewalls`; Apply is refused
+with an explanation, the dashboard says "Windows Firewall is bypassed: … is the active firewall", `doctor` and both
+self-tests report it. New fake-firewall test `Third_party_firewall_makes_apply_refuse_with_an_explanation`.
+Core tests: 135 passed; Windows tests: 20 passed, 1 skipped.
+
 ## Not verified
 
 | Item | Status |
 |---|---|
-| Full elevated `apply` / `restore` of a real profile against Overwatch.exe | not run — needs the game installed (same COM add/read-back/remove path is proven by the live self-test) |
+| Full elevated `apply` / `restore` of a real profile against Overwatch.exe | the user applied block-me successfully on their gaming PC on 2026-11-07; not run on the build PC (game not installed) |
 | Live game verification (NetGraph datacenter after applying) | **not performed** — Overwatch not downloaded on this PC |
 | Windows 10, high-DPI 150–200 %, Group Policy-managed PC, third-party firewall | not tested |
 | Persisted RemoteAddresses limit per rule | unknown; plans use ≤ 1,000 chars per rule (well under what the API accepts on assignment) |

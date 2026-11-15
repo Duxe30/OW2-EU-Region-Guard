@@ -33,6 +33,7 @@ public sealed class Loc
         ["FwOn"] = "Enabled · active network: {0}",
         ["FwOff"] = "OFF for the active network — rules would have no effect",
         ["FwUnavailable"] = "Firewall API unavailable",
+        ["FwThirdParty"] = "Windows Firewall is bypassed: {0} is the active firewall, so rules would NOT be enforced. Turn off the Firewall component inside {0} first (this app never changes it).",
         ["AdminNo"] = "Admin: asked through UAC only when you apply or restore",
         ["AdminYes"] = "Admin: this window is already elevated",
 

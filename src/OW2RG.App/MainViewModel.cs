@@ -363,7 +363,9 @@ public sealed class MainViewModel : ObservableObject
         if (_env is { } env)
         {
             FirewallOk = env.RulesWouldTakeEffect;
-            FirewallText = !env.ApiAvailable ? L["FwUnavailable"] : env.CurrentProfilesEnabled ? L.F("FwOn", FirewallEnvironment.ProfileNames(env.CurrentProfileTypes)) : L["FwOff"];
+            FirewallText = !env.ApiAvailable ? L["FwUnavailable"]
+                : env.ThirdPartyFirewalls.Count > 0 ? L.F("FwThirdParty", string.Join(", ", env.ThirdPartyFirewalls))
+                : env.CurrentProfilesEnabled ? L.F("FwOn", FirewallEnvironment.ProfileNames(env.CurrentProfileTypes)) : L["FwOff"];
             AdminText = env.IsElevated ? L["AdminYes"] : L["AdminNo"];
         }
         if (_catalog is { } c)

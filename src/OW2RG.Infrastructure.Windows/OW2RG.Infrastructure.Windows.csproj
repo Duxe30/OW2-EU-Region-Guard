@@ -8,6 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OW2RG.Core\OW2RG.Core.csproj" />
+    <!-- Security Center query: is a third-party firewall (Kaspersky, Norton, …) the enforcing firewall? -->
+    <PackageReference Include="System.Management" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
     <!-- The reviewed catalog and map ship inside the binary so the app works offline and from a single EXE. -->
